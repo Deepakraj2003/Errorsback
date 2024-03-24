@@ -8,19 +8,19 @@ import { ObjectId } from "mongodb";
 
 const app = express();
 app.use(cors())
-// Connection URL
+
 const url = "mongodb+srv://deera3468:wQYHszmzEZiYK4tD@back153.i8nqqzc.mongodb.net/?retryWrites=true&w=majority&appName=back153";
 const client = new MongoClient(url);
 
-// Database Name
+
 const dbName = 'stack';
 await client.connect();
 console.log('Mongodb Connected successfully to server');
 
-//middleware
+
 app.use(express.json())
 
-// Parse incoming request bodies
+
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
@@ -36,18 +36,17 @@ app.post('/post', async (req, res) => {
 });
 
 app.post('/postcomment', async (req, res) => {
-    const { questionId, comment } = req.body; // Assuming you're also sending the questionId along with the comment
+    const { questionId, comment } = req.body; 
 
-    // Update the question document by adding the new comment to the comments array
     const updatedQuestion = await client.db("stack").collection("questions").findOneAndUpdate(
-        { _id:new ObjectId(questionId) }, // Find the question document by its ID
-        { $addToSet: { comments: comment } }, // Add the new comment to the comments array
-        { returnDocument: 'after' } // Return the updated document after the update operation
+        { _id:new ObjectId(questionId) }, 
+        { $addToSet: { comments: comment } },
+        { returnDocument: 'after' } 
     );
 
-    // Log the updated question document
+ 
 
-    res.status(200).json(updatedQuestion.value); // Respond with the updated question document
+    res.status(200).json(updatedQuestion.value); 
 });
 app.get('/getmany', async (req,res)=>{
     const getdata= await client.db("stack").collection("questions").find({}).toArray();
