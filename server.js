@@ -62,7 +62,7 @@ app.post('/postcomment', async (req, res) => {
 
     res.status(200).json(updatedQuestion.value); 
 });
-app.get('/getmany',auth, async (req,res)=>{
+app.get('/getmany', async (req,res)=>{
     const getdata= await client.db("stack").collection("questions").find({}).toArray();
     res.status(200).send(getdata);
 });
